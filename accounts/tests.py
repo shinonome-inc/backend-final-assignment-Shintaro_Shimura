@@ -173,7 +173,6 @@ class TestSignupView(TestCase):
         form = response.context["form"]
 
         self.assertEqual(response.status_code, 200)
-        print(form.errors)
         self.assertFalse(User.objects.filter(password=numberpassword_data["password1"]).exists())
         self.assertFalse(User.objects.filter(password=numberpassword_data["password2"]).exists())
         self.assertFalse(form.is_valid())
@@ -190,7 +189,6 @@ class TestSignupView(TestCase):
         form = response.context["form"]
 
         self.assertEqual(response.status_code, 200)
-        print(form.errors)
         self.assertFalse(User.objects.filter(password=mismatch_data["password1"]).exists())
         self.assertFalse(User.objects.filter(password=mismatch_data["password2"]).exists())
         self.assertFalse(form.is_valid())
