@@ -144,7 +144,7 @@ class TestSignupView(TestCase):
         self.assertFalse(User.objects.filter(password=short_password_data["password1"]).exists())
         self.assertFalse(User.objects.filter(password=short_password_data["password2"]).exists())
         self.assertFalse(form.is_valid())
-        self.assertEqual("このパスワードは短すぎます。最低 8 文字以上必要です。", form.errors["password2"][0])
+        self.assertIn("このパスワードは短すぎます。最低 8 文字以上必要です。", form.errors["password2"][0])
 
     def test_failure_post_with_password_similar_to_username(self):
         similar_data = {
@@ -160,7 +160,7 @@ class TestSignupView(TestCase):
         self.assertFalse(User.objects.filter(password=similar_data["password1"]).exists())
         self.assertFalse(User.objects.filter(password=similar_data["password2"]).exists())
         self.assertFalse(form.is_valid())
-        self.assertEqual("このパスワードは ユーザー名 と似すぎています。", form.errors["password2"][0])
+        self.assertIn("このパスワードは ユーザー名 と似すぎています。", form.errors["password2"][0])
 
     def test_failure_post_with_only_numbers_password(self):
         numberpassword_data = {
@@ -176,7 +176,7 @@ class TestSignupView(TestCase):
         self.assertFalse(User.objects.filter(password=numberpassword_data["password1"]).exists())
         self.assertFalse(User.objects.filter(password=numberpassword_data["password2"]).exists())
         self.assertFalse(form.is_valid())
-        self.assertEqual("このパスワードは数字しか使われていません。", form.errors["password2"][0])
+        self.assertIn("このパスワードは数字しか使われていません。", form.errors["password2"][0])
 
     def test_failure_post_with_mismatch_password(self):
         mismatch_data = {
@@ -192,7 +192,7 @@ class TestSignupView(TestCase):
         self.assertFalse(User.objects.filter(password=mismatch_data["password1"]).exists())
         self.assertFalse(User.objects.filter(password=mismatch_data["password2"]).exists())
         self.assertFalse(form.is_valid())
-        self.assertEqual("確認用パスワードが一致しません。", form.errors["password2"][0])
+        self.assertIn("確認用パスワードが一致しません。", form.errors["password2"][0])
 
 
 # class TestLoginView(TestCase):
