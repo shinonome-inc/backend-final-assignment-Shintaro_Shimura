@@ -1,0 +1,11 @@
+{% extends "base.html" %} <!--base.htmlを継承 -->
+
+{% block title %}Sign Up{% endblock %} <!--titleを入れる -->
+
+{% block content %}
+<form method="post">
+    {{ form.as_p }} <!--formにはSignupFormのインスタンスが入っている。as_pとすることで、各input要素がpタグで囲まれた状態で表示される。-->
+    {% csrf_token %} <!--csrf_token必須。formタグ内であればどこに書いてもOK -->
+    <button type="submit">ユーザー登録</button>
+</form>
+{% endblock %}
