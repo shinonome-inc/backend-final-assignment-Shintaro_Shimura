@@ -210,7 +210,10 @@ class TestLoginView(TestCase):
         self.assertTemplateUsed(response, "accounts/login.html")
 
     def test_success_post(self):
-        data = {"username": "testuser", "password": "testpassword"}
+        data = {
+            "username": "testuser",
+            "password": "testpassword",
+        }
         response = self.client.post(self.url, data)
         self.assertRedirects(
             response,
