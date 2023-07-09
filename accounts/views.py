@@ -14,7 +14,6 @@ class SignupView(CreateView):
     form_class = SignupForm
     template_name = "accounts/signup.html"
     success_url = reverse_lazy("tweets:home")
-    success_url = reverse_lazy(settings.LOGIN_REDIRECT_URL)
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -34,7 +33,7 @@ class Lououtview(auth_views.LogoutView):
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
-    template_name = "accouts/profile.html"
+    template_name = "accounts/profile.html"
     model = User
     slug_url_kwarg = "username"
     slug_field = "username"

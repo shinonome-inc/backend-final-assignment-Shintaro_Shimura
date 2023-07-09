@@ -8,7 +8,7 @@ app_name = "accounts"
 urlpatterns = [
     path("signup/", views.SignupView.as_view(), name="signup"),
     path("login/", views.LoginView.as_view(), name="login"),
-    path("logout/", auth_views.LogoutView.as_view(template_name="accounts/login.html"), name="logout"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("<str:username>/", views.UserProfileView.as_view(), name="user_profile"),
     # path('<str:username>/follow/', views.FollowView.as_view(), name='follow'),
     # path('<str:username>/unfollow/', views.UnFollowView, name='unfollow'),
