@@ -1,9 +1,12 @@
-# from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 
 from .forms import SignupForm
+
+User = get_user_model()
 
 
 class SignupView(CreateView):
@@ -18,3 +21,14 @@ class SignupView(CreateView):
         user = authenticate(self.request, username=username, password=password)
         login(self.request, user)
         return response
+
+
+class LoginView(auth_views.LoginView):
+    template_name = "accounts/login.html"
+
+
+class UserProfileView(LoginRequiredMixin, DetailView):
+    template_name = "accounts/profile.html"
+    model = User
+    slug_url_kwarg = "username"
+    slug_field = "username"
