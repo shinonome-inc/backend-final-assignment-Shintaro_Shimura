@@ -23,6 +23,13 @@
       </li>
     </ul>
     {% else %}
+    <ul class="top">
+      <li>
+        <a href="{% url 'accounts:signup' %}">
+          <button type="button" class="topbuttons blueback">登録</button>
+        </a>
+      </li>
+    </ul>
     <ul class="top">ログイン</ul>
     {% endif %}
   </header>
