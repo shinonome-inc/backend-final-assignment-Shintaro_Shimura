@@ -1,1 +1,11 @@
 {% extends "base.html" %}
+
+{% block content %}
+
+<div>
+    <a class='btn btn-primary' href="{% url 'accounts:signup' %}">会員登録</a>
+    <a class='btn btn-primary' href="{% url 'accounts:login' %}">ログイン</a>
+    <a class='btn btn-primary' href="{% url 'accounts:logout' %}">ログアウト</a>
+</div>
+
+{% endblock %}

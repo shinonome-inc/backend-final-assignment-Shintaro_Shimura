@@ -3,6 +3,8 @@ from django.contrib.auth import SESSION_KEY, get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from tweets.models import Tweet
+
 User = get_user_model()
 
 
@@ -210,8 +212,12 @@ class TestLoginView(TestCase):
         self.assertTemplateUsed(response, "accounts/login.html")
 
     def test_success_post(self):
-        data = {"username": "testuser", "password": "testpassword"}
-        response = self.client.post(self.url, data)
+        valid_data = {
+            "username": "testuser",
+            "password": "testpassword",
+        }
+        response = self.client.post(self.url, valid_data)
+
         self.assertRedirects(
             response,
             reverse(settings.LOGIN_REDIRECT_URL),
@@ -264,8 +270,19 @@ class TestLogoutView(TestCase):
         self.assertNotIn(SESSION_KEY, self.client.session)
 
 
-# class TestUserProfileView(TestCase):
-#     def test_success_get(self):
+class TestUserProfileView(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username="testuser1", email="twst1@example.com", password="testpassword")
+        self.user2 = User.objects.create_user(username="testuser2", email="twst2@example.com", password="testpassword")
+        self.url = reverse("accounts:user_profile", args=[self.user1.username])
+        self.client.force_login(self.user1)
+
+    def test_success_get(self):
+        Tweet.objects.create(user=self.user1, content="test content")
+        Tweet.objects.create(user=self.user2, content="test content")
+        response = self.client.get(self.url)
+
+        self.assertQuerysetEqual(response.context["tweets"], Tweet.objects.filter(user=self.user1))
 
 
 # class TestUserProfileEditView(TestCase):
