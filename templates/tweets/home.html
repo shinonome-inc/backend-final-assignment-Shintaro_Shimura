@@ -6,8 +6,12 @@
 <h1>Homeです</h1>
 <div class="container mt-3">
     <a href="{% url 'tweets:create' %}"><button type="button" class="btn btn-outline-primary">tweet</button></a>
-    {% for tweet in tweets %}
-    {% include 'tweets/tweet.html' with tweet=tweet %}
+    {% for tweet in tweet_list %}
+    <div class="p-4 m-4 bg-light border border-primary rounded">
+        <p><a href="{% url 'accounts:user_profile' tweet.user %}">{{ tweet.user }}</a> {{ tweet.created_at }}</p>
+        <p>{{ tweet.content }}</p>
+        <p><a href="{% url 'tweets:detail' tweet.pk %}" class='btn btn-primary'>詳細へ</a></p>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}
