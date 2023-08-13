@@ -1,6 +1,12 @@
-{% extends 'base.html' %}
-{% block title %}profile{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
-<h1>ユーザー名:{{user.username}}</h1>
+<h1>Profile</h1>
+<p>username: {{ user.username }}</p>
+{% for tweet in tweets %}
+<div>
+    <p>投稿者: {{ tweet.user }} {{ tweet.created_at }}</p>
+    <p>コメント: {{ tweet.content }}</p>
+</div>
+{% endfor %}
 {% endblock %}

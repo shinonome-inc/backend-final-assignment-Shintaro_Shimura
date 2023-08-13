@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -8,8 +10,10 @@
 
 <body>
   <header>
-    <p id="logo">Twitter Clone</p>
     {% if request.user.is_authenticated %}
+    <a href="{% url 'tweets:home' %}" id="homelink">
+      Twitter Clone
+    </a>
     <ul class="top">
       <li>
         <a href="{% url 'accounts:logout' %}">
@@ -18,11 +22,12 @@
       </li>
       <li>
         <a href="{% url 'accounts:user_profile' username=request.user.username %}" id="usericon">
-          {{ user.username }}
+          {{ request.user.username }}
         </a>
       </li>
     </ul>
     {% else %}
+    <p id="logo">Twitter Clone</p>
     <ul class="top">
       <li>
         <a href="{% url 'accounts:signup' %}">
@@ -30,7 +35,6 @@
         </a>
       </li>
     </ul>
-    <ul class="top">ログイン</ul>
     {% endif %}
   </header>
   {% block content %}
