@@ -1,12 +1,42 @@
 {% extends "base.html" %}
 
+{% block title %}Profile{% endblock %}
+
 {% block content %}
-<h1>Profile</h1>
-<p>username: {{ user.username }}</p>
-{% for tweet in tweets %}
+<h1>profile</h1>
 <div>
-    <p>投稿者: {{ tweet.user }} {{ tweet.created_at }}</p>
-    <p>コメント: {{ tweet.content }}</p>
+    <p>フォロー数:{{following_num}}</p>
+    <p>フォロワー数:{{followers_num}}</p>
+    <div>
+        <a href="{% url 'accounts:following_list' user.username %}">フォロー一覧</a>
+        <a href="{% url 'accounts:follower_list' user.username %}">フォロワー一覧</a>
+    </div>
 </div>
-{% endfor %}
+<div>
+    {% if request.user != user %}
+    {% if is_following is True %}
+    <form action="{%  url 'accounts:unfollow' user.username %}" method="POST"><button type="submit"
+            id="unfollow">フォローを外す</button>
+        {% csrf_token %}
+    </form>
+    {% else %}
+    <form action="{%  url 'accounts:follow' user.username %}" method="POST"><button type="submit"
+            id="follow">フォローする</button>
+        {% csrf_token %}
+    </form>
+    <br>
+    {% endif %}
+    {% endif %}
+</div>
+<div class="container mt-3">
+    {% for tweet in tweet_list %}
+    <div>
+        <a href="{% url 'accounts:user_profile' username=tweet.user %}"></a>{{ tweet.user }} {{ tweet.created_at }}
+        <a href="{% url 'tweets:detail' tweet.pk %}">詳細</a>
+    </div>
+    <div>
+        {{ tweet.content }}
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

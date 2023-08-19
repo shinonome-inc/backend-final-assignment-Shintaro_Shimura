@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Followers{% endblock %}
+
+{% block content %}
+<h1>FollowerList</h1>
+{% for follower in follower_list %}
+{% if follower_list %}
+<div>
+    <a href="{% url 'accounts:user_profile' username=follower.follower.username %}">
+        {{follower.follower}}</a>
+</div>
+{% endif %}
+{% empty %}
+<p>フォローされているユーザーはいません</p>
+{% endfor %}
+{% endblock %}
