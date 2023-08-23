@@ -38,7 +38,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object
-        context["tweets"] = Tweet.objects.select_related("user").filter(user=user).order_by("-created_at")
+        context["tweets"] = Tweet.objects.select_related("user").filter(user=user)
         context["tweet_user"] = user
         context["is_following"] = FriendShip.objects.filter(following=user, follower=self.request.user).exists()
         context["following_num"] = FriendShip.objects.filter(follower=user).count()

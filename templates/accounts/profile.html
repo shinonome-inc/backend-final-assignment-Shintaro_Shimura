@@ -5,8 +5,8 @@
 {% block content %}
 <h1>profile</h1>
 <div>
-    <p>フォロー数:{{following_num}}</p>
-    <p>フォロワー数:{{followers_num}}</p>
+    <p>フォロー数:<a href="{% url 'accounts:following_list' user.username %}">{{following_num}}</a></p>
+    <p>フォロワー数:<a href="{% url 'accounts:following_list' user.username %}">{{followers_num}}</a></p>
     <div>
         <a href="{% url 'accounts:following_list' user.username %}">フォロー一覧</a>
         <a href="{% url 'accounts:follower_list' user.username %}">フォロワー一覧</a>
