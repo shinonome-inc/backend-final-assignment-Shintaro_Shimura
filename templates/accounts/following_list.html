@@ -6,12 +6,10 @@
 <h1>FollowingList</h1>
 <ul>
     {% for following_friendship in following_friendships %}
-    {% if following_friendship.following %}
     <li>
         <a href="{% url 'accounts:user_profile' following_friendship.following.username %}">
             {{ following_friendship.following.username }}</a>
     </li>
-    {% endif %}
     {% empty %}
     <p>フォローしているユーザーはいません</p>
     {% endfor %}

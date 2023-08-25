@@ -6,7 +6,7 @@
 <h1>profile</h1>
 <div>
     <a href="{% url 'accounts:following_list' user.username %}">フォロー数:{{following_num}}</a>
-    <a href="{% url 'accounts:following_list' user.username %}">フォロワー数:{{followers_num}}</a>
+    <a href="{% url 'accounts:follower_list' user.username %}">フォロワー数:{{followers_num}}</a>
     <div>
         <a href="{% url 'accounts:following_list' user.username %}">フォロー一覧</a>
         <a href="{% url 'accounts:follower_list' user.username %}">フォロワー一覧</a>
