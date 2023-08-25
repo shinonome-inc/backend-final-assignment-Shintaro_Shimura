@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}FollowingList{% endblock %}
+
+{% block content %}
+<h1>FollowingList</h1>
+<ul>
+    {% for following_friendship in following_friendships %}
+    <li>
+        <a href="{% url 'accounts:user_profile' following_friendship.following.username %}">
+            {{ following_friendship.following.username }}</a>
+    </li>
+    {% empty %}
+    <p>フォローしているユーザーはいません</p>
+    {% endfor %}
+</ul>
+{% endblock %}

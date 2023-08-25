@@ -3,14 +3,16 @@
 {% block title %}Home{% endblock %} <!-- titleを入れる -->
 
 {% block content %}
-<h1>Homeです</h1>
+<h1>Home</h1>
 <div class="container mt-3">
     <a href="{% url 'tweets:create' %}"><button type="button" class="btn btn-outline-primary">tweet</button></a>
     {% for tweet in tweet_list %}
     <div class="p-4 m-4 bg-light border border-primary rounded">
-        <p><a href="{% url 'accounts:user_profile' tweet.user %}">{{ tweet.user }}</a> {{ tweet.created_at }}</p>
-        <p>{{ tweet.content }}</p>
-        <p><a href="{% url 'tweets:detail' tweet.pk %}" class='btn btn-primary'>詳細へ</a></p>
+        <p>作成者：<a href="{% url 'accounts:user_profile' tweet.user %}">{{ tweet.user }}</a></p>
+        <p>作成日：{{ tweet.created_at }}</p>
+        <p>内容：{{ tweet.content }}</p>
+        <a href="{% url 'tweets:detail' tweet.pk %}" class='btn btn-primary'>詳細へ</a>
+        <br>
     </div>
     {% endfor %}
 </div>
