@@ -9,10 +9,10 @@ class User(AbstractUser):
 
 class FriendShip(models.Model):
     following = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="friendships_by_follower"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="friendships_by_following"
     )
     follower = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="friendships_by_following"
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="friendships_by_follower"
     )
 
     class Meta:

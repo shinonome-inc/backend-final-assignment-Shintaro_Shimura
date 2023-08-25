@@ -367,16 +367,24 @@ class TestUnfollowView(TestCase):
 
 
 class TestFollowingListView(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username="testuser1", password="testpassword1")
+        self.user2 = User.objects.create_user(username="testuser2", password="testpassword2")
+        self.client.login(username="testuser1", password="testpassword1")
+        self.url = reverse("accounts:following_list", kwargs={"username": self.user2.username})
+
     def test_success_get(self):
-        self.user = User.objects.create_user(username="testuser", password="testpassword")
-        self.client.login(username="testuser", password="testpassword")
-        response = self.client.get(reverse("accounts:following_list", kwargs={"username": self.user.username}))
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
 
 class TestFollowerListView(TestCase):
+    def setUp(self):
+        self.user1 = User.objects.create_user(username="testuser1", password="testpassword1")
+        self.user2 = User.objects.create_user(username="testuser2", password="testpassword2")
+        self.client.login(username="testuser1", password="testpassword1")
+        self.url = reverse("accounts:follower_list", kwargs={"username": self.user2.username})
+
     def test_success_get(self):
-        self.user = User.objects.create_user(username="testuser", password="testpassword")
-        self.client.login(username="testuser", password="testpassword")
-        response = self.client.get(reverse("accounts:follower_list", kwargs={"username": self.user.username}))
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
