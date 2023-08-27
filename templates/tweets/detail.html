@@ -8,6 +8,8 @@
     <div class="alert alert-success" role="alert">
         <p>投稿者:{{tweet.user}}</p>
         <p>コメント:{{tweet.content}}</p>
+        {% include 'tweets/like.html' %}
+        {% include "tweets/like_js.html" %}
 
         {% if tweet.user == request.user %}
         <a href="{% url 'tweets:delete' tweet.pk %}" class="btn btn-danger ms-3" tabindex="-1" role="button"

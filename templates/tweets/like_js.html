@@ -1,0 +1,42 @@
+<script>
+    const getCookie = (name) => {
+        if (document.cookie && document.cookie !== '') {
+            for (const cookie of document.cookie.split(';')) {
+                const [key, value] = cookie.trim().split('=')
+                if (key === name) {
+                    return decodeURIComponent(value)
+                }
+            }
+        }
+    }
+    const csrftoken = getCookie('csrftoken')
+
+    const changeLike = async (id) => {
+        const like_button = document.querySelector("#" + id)
+        const url = like_button.dataset.url;
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrftoken,
+            }
+        });
+        const tweet_data = await response.json();
+        changeStyle(tweet_data, like_button);
+    }
+
+    const changeStyle = (tweet_data, like_button) => {
+        const like_count = document.querySelector(".count_" + tweet_data.tweet_id)
+        if (tweet_data.is_liked) {
+            unlike_url = tweet_data.unlike_url;
+            like_button.setAttribute("data-url", unlike_url);
+            like_button.innerHTML = "いいね解除";
+            like_count.textContent = tweet_data.like_count;
+        } else {
+            like_url = tweet_data.like_url;
+            like_button.setAttribute("data-url", like_url);
+            like_button.innerHTML = "いいね";
+            like_count.textContent = tweet_data.like_count;
+        }
+    }
+</script>

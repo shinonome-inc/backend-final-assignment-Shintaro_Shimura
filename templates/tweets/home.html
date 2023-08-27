@@ -12,7 +12,8 @@
         <p>作成日：{{ tweet.created_at }}</p>
         <p>内容：{{ tweet.content }}</p>
         <a href="{% url 'tweets:detail' tweet.pk %}" class='btn btn-primary'>詳細へ</a>
-        <br>
+        {% include 'tweets/like.html' %}
+        {% include "tweets/like_js.html" %}
     </div>
     {% endfor %}
 </div>

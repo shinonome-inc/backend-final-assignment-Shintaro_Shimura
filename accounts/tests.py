@@ -288,7 +288,7 @@ class TestUserProfileView(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "accounts/profile.html")
-        self.assertQuerysetEqual(context["tweets"], Tweet.objects.filter(user=self.target_user), ordered=False)
+        self.assertQuerysetEqual(context["tweet_list"], Tweet.objects.filter(user=self.target_user))
         ct_follower = FriendShip.objects.filter(following__exact=self.target_user).count()
         self.assertEqual(context["followers_num"], ct_follower)
         ct_following = FriendShip.objects.filter(follower__exact=self.target_user).count()
