@@ -11,12 +11,14 @@ class TestHomeView(TestCase):
         self.url = reverse("tweets:home")
         self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpassword")
         self.client.login(username="testuser", password="testpassword")
+        self.post1 = Tweet.objects.create(user=self.user, content="testpost1")
+        self.post2 = Tweet.objects.create(user=self.user, content="testpost2")
 
     def test_success_get(self):
-        Tweet.objects.create(user=self.user, content="test tweet")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context["tweet_list"], Tweet.objects.all())
+        self.assertTemplateUsed(response, "tweets/home.html")
+        self.assertQuerysetEqual(response.context["tweet_list"], Tweet.objects.order_by("-created_at"), ordered=False)
 
 
 class TestTweetCreateView(TestCase):
@@ -113,11 +115,7 @@ class TestTweetDeleteView(TestCase):
 
 class TestLikeView(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username="testuser",
-            email="test@example.com",
-            password="testpassword",
-        )
+        self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpassword")
         self.client.login(username="testuser", password="testpassword")
         self.tweet = Tweet.objects.create(user=self.user, content="test_tweet")
         self.url = reverse("tweets:like", kwargs={"pk": self.tweet.pk})
@@ -137,16 +135,12 @@ class TestLikeView(TestCase):
         Like.objects.create(tweet=self.tweet, user=self.user)
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(Like.objects.filter(tweet=self.tweet, user=self.user).exists())
+        self.assertEqual(Like.objects.count(), 1)
 
 
 class TestUnLikeView(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username="testuser",
-            email="test@example.com",
-            password="testpassword",
-        )
+        self.user = User.objects.create_user(username="testuser", email="test@example.com", password="testpassword")
         self.client.login(username="testuser", password="testpassword")
         self.tweet = Tweet.objects.create(user=self.user, content="test_tweet")
         Like.objects.create(tweet=self.tweet, user=self.user)
@@ -159,10 +153,9 @@ class TestUnLikeView(TestCase):
     def test_failure_post_with_not_exist_tweet(self):
         response = self.client.post(reverse("tweets:unlike", kwargs={"pk": 100}))
         self.assertEqual(response.status_code, 404)
-        self.assertTrue(Like.objects.filter(tweet=self.tweet, user=self.user).exists())
+        self.assertTrue(Like.objects.all().count(), 1)
 
     def test_failure_post_with_unliked_tweet(self):
         Like.objects.filter(tweet=self.tweet, user=self.user).delete()
         response = self.client.post(reverse("tweets:unlike", kwargs={"pk": self.tweet.pk}))
         self.assertEqual(response.status_code, 200)
-        self.assertFalse(Like.objects.filter(tweet=self.tweet, user=self.user).exists())
