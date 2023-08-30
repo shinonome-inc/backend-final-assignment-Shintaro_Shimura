@@ -14,7 +14,7 @@ class HomeView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["tweet_list"] = Tweet.objects.select_related("user").prefetch_related("liked_tweet")
+        context["tweet_list"] = Tweet.objects.select_related("user").prefetch_related("likes")
         liked_list = (
             Like.objects.filter(user=self.request.user).select_related("tweet").values_list("tweet_id", flat=True)
         )
@@ -35,7 +35,7 @@ class TweetCreateView(LoginRequiredMixin, CreateView):
 class TweetDetailView(LoginRequiredMixin, DetailView):
     template_name = "tweets/detail.html"
     model = Tweet
-    queryset = model.objects.select_related("user").prefetch_related("liked_tweet")
+    queryset = model.objects.select_related("user").prefetch_related("likes")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,8 +61,8 @@ class LikeView(LoginRequiredMixin, View):
         tweet = get_object_or_404(Tweet, id=tweet_id)
         Like.objects.get_or_create(tweet=tweet, user=self.request.user)
         unlike_url = reverse("tweets:unlike", kwargs={"pk": tweet_id})
-        tweet = Tweet.objects.prefetch_related("liked_tweet").get(id=tweet_id)
-        like_count = tweet.liked_tweet.count()
+        tweet = Tweet.objects.prefetch_related("likes").get(id=tweet_id)
+        like_count = tweet.likes.count()
         is_liked = True
         context = {
             "like_count": like_count,
@@ -77,12 +77,12 @@ class UnlikeView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         tweet_id = self.kwargs["pk"]
         tweet = get_object_or_404(Tweet, pk=tweet_id)
-        if like := Like.objects.filter(user=self.request.user, tweet=tweet):
-            like.delete()
+        like = Like.objects.filter(user=self.request.user, tweet=tweet)
+        like.delete()
         is_liked = False
         like_url = reverse("tweets:like", kwargs={"pk": tweet_id})
-        tweet = Tweet.objects.prefetch_related("liked_tweet").get(id=tweet_id)
-        like_count = tweet.liked_tweet.count()
+        tweet = Tweet.objects.prefetch_related("likes").get(id=tweet_id)
+        like_count = tweet.likes.count()
         context = {
             "like_count": like_count,
             "tweet_id": tweet_id,

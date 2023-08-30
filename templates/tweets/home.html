@@ -13,8 +13,8 @@
         <p>内容：{{ tweet.content }}</p>
         <a href="{% url 'tweets:detail' tweet.pk %}" class='btn btn-primary'>詳細へ</a>
         {% include 'tweets/like.html' %}
-        {% include "tweets/like_js.html" %}
     </div>
     {% endfor %}
 </div>
+{% include "tweets/like_js.html" %}
 {% endblock %}

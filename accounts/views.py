@@ -39,10 +39,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         user = self.object
         context["tweet_user"] = user
         context["tweet_list"] = (
-            Tweet.objects.select_related("user")
-            .prefetch_related("liked_tweet")
-            .filter(user=user)
-            .order_by("-created_at")
+            Tweet.objects.select_related("user").prefetch_related("likes").filter(user=user).order_by("-created_at")
         )
         context["is_following"] = FriendShip.objects.filter(following=user, follower=self.request.user).exists()
         context["following_num"] = FriendShip.objects.filter(follower=user).count()

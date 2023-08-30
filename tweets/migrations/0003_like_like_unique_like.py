@@ -17,14 +17,14 @@ class Migration(migrations.Migration):
                 (
                     "tweet",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, related_name="liked_tweet", to="tweets.tweet"
+                        on_delete=django.db.models.deletion.CASCADE, related_name="likes", to="tweets.tweet"
                     ),
                 ),
                 (
                     "user",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="liked_user",
+                        related_name="likeusers",
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),
