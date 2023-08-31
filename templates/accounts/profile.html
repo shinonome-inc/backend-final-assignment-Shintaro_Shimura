@@ -37,6 +37,8 @@
     <div>
         {{ tweet.content }}
     </div>
+    {% include "tweets/like.html" %}
     {% endfor %}
 </div>
+{% include "tweets/like_js.html" %}
 {% endblock %}

@@ -7,11 +7,10 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, View
 
-from tweets.models import Tweet
+from tweets.models import Like, Tweet
 
-from .admin import User
 from .forms import SignupForm
-from .models import FriendShip
+from .models import FriendShip, User
 
 
 class SignupView(CreateView):
@@ -38,11 +37,15 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object
-        context["tweets"] = Tweet.objects.select_related("user").filter(user=user)
         context["tweet_user"] = user
+        context["tweet_list"] = (
+            Tweet.objects.select_related("user").prefetch_related("likes").filter(user=user).order_by("-created_at")
+        )
         context["is_following"] = FriendShip.objects.filter(following=user, follower=self.request.user).exists()
         context["following_num"] = FriendShip.objects.filter(follower=user).count()
         context["followers_num"] = FriendShip.objects.filter(following=user).count()
+        liked_list = Like.objects.filter(user=self.request.user).values_list("tweet_id", flat=True)
+        context["liked_list"] = liked_list
         return context
 
 

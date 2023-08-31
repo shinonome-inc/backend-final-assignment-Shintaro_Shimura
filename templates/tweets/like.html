@@ -1,0 +1,6 @@
+{% if tweet.id in liked_list %}
+<button id="tweet_{{tweet.id}}" onclick="changeLike(id)" data-url="{% url 'tweets:unlike' tweet.id %}">いいね解除</button>
+{% else %}
+<button id="tweet_{{tweet.id}}" onclick="changeLike(id)" data-url="{% url 'tweets:like' tweet.id %}">いいね</button>
+{% endif %}
+<span class="count_{{tweet.id}}">{{tweet.likes.count}}</span><a>いいね</a>
