@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
             model_name="like",
             name="user",
             field=models.ForeignKey(
-                on_delete=django.db.models.deletion.CASCADE, related_name="likeusers", to=settings.AUTH_USER_MODEL
+                on_delete=django.db.models.deletion.CASCADE, related_name="likes", to=settings.AUTH_USER_MODEL
             ),
         ),
     ]
